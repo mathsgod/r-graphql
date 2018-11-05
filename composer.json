@@ -1,0 +1,18 @@
+{
+    "name": "hostlink/r-graphql",
+    "description": "GraphQL for php",
+    "type": "library",
+    "require": {
+        "webonyx/graphql-php": "^0.12.6"
+    },
+    "authors": [
+        {
+            "name": "Raymond Chong",
+            "email": "raymond@hostlink.com.hk"
+        }
+    ],"autoload": {
+        "psr-4": {
+            "R\\GraphQL\\":"src/"
+        }
+    }
+}
