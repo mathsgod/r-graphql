@@ -32,7 +32,7 @@ class Schema
         foreach ($schema->getTypeMap() as $type) {
 
             try {
-                $class = new ReflectionClass("\Type\\" . $type->name);
+                $class = new \ReflectionClass("\Type\\" . $type->name);
             } catch (Exception $e) {
                 continue;
 
