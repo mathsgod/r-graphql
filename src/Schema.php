@@ -33,7 +33,7 @@ class Schema
 
             try {
                 $class = new \ReflectionClass("\Type\\" . $type->name);
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
                 continue;
 
             }
