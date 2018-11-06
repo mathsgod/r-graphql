@@ -9,6 +9,7 @@ class Schema
     public function __construct(BuildSchema $schema)
     {
         $this->schema = $schema;
+
     }
 
     public function executeQuery($query, $variableValues)
