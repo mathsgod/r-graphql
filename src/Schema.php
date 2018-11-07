@@ -66,7 +66,7 @@ class Schema
                         $t->root = $root;
                         return call_user_func_array([$t, $field->name], $data);
                     };
-                } catch (Exception $e) {
+                } catch (\Exception $e) {
 
                 }
 
