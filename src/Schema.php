@@ -6,7 +6,7 @@ use GraphQL\GraphQL;
 
 class Schema
 {
-    public function __construct(BuildSchema $schema)
+    public function __construct($schema)
     {
         $this->schema = $schema;
 
@@ -16,6 +16,8 @@ class Schema
     {
         try {
             $result = GraphQL::executeQuery($this->schema, $query, $rootValue, null, $variableValues);
+
+            $result = $result->toArray();
         } catch (\Exception $e) {
             $result = [
                 'error' => [
