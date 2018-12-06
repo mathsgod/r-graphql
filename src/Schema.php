@@ -47,17 +47,17 @@ class Schema
                 continue;
             }
 
-            foreach ($type->getFields() as $field) {
-   
+            foreach ($schema->getTypeMap() as $type) {
+
                 try {
                     $class = new \ReflectionClass("\Type\\" . $type->name);
                 } catch (\Exception $e) {
                     continue;
                 }
     
+                $className = $class->getName();
+                $o = new $className();
                 foreach ($type->getFields() as $field) {
-                    $className = $class->getName();
-                    $o = new $className();
                     if (is_callable([$className, $field->name]) || method_exists($o, "__call")) {
     
                         $field->resolveFn = function ($root, $args) use ($field, $context, $o) {
@@ -66,7 +66,6 @@ class Schema
                     }
     
                 }
-
             }
         }
 
