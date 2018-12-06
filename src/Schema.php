@@ -49,15 +49,23 @@ class Schema
 
             foreach ($type->getFields() as $field) {
    
-                $field->resolveFn = function ($root, $args) use ($class, $field, $context) {
+                try {
+                    $class = new \ReflectionClass("\Type\\" . $type->name);
+                } catch (\Exception $e) {
+                    continue;
+                }
+    
+                foreach ($type->getFields() as $field) {
                     $className = $class->getName();
-                    $t = new $className();
-
-
-                    return call_user_func_array([$t, $field->name], [$root, $args, $context]);
-
-                };
-
+                    $o = new $className();
+                    if (is_callable([$className, $field->name]) || method_exists($o, "__call")) {
+    
+                        $field->resolveFn = function ($root, $args) use ($field, $context, $o) {
+                            return call_user_func_array([$o, $field->name], [$root, $args, $context]);
+                        };
+                    }
+    
+                }
 
             }
         }
