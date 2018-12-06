@@ -48,22 +48,16 @@ class Schema
             }
 
             foreach ($type->getFields() as $field) {
-                try {
-
-                    $method = $class->getMethod($field->name);
-
-                    $field->resolveFn = function ($root, $args) use ($class, $method, $field, $context) {
-                        $className = $class->getName();
-                        $t = new $className();
+   
+                $field->resolveFn = function ($root, $args) use ($class, $field, $context) {
+                    $className = $class->getName();
+                    $t = new $className();
 
 
-                        return call_user_func_array([$t, $field->name], [$root, $args, $context]);
+                    return call_user_func_array([$t, $field->name], [$root, $args, $context]);
 
-                    };
-                } catch (\Exception $e) {
+                };
 
-
-                }
 
             }
         }
