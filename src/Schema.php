@@ -18,6 +18,13 @@ class Schema
             $result = GraphQL::executeQuery($this->schema, $query, $rootValue, null, $variableValues);
 
             $result = $result->toArray();
+
+            if ($result["errors"]) {
+                $result["error"]["message"] = $result["errors"][0]["message"];
+                $result["error"]["errors"] = $result["errors"];
+                unset($result["errors"]);
+
+            }
         } catch (\Exception $e) {
             $result = [
                 'error' => [
@@ -28,16 +35,16 @@ class Schema
         return $result;
     }
 
-    public static function Build($gql)
+    public static function Build($gql, $context)
     {
         $schema = BuildSchema::build($gql);
+
         foreach ($schema->getTypeMap() as $type) {
 
             try {
                 $class = new \ReflectionClass("\Type\\" . $type->name);
             } catch (\Exception $e) {
                 continue;
-
             }
 
             foreach ($type->getFields() as $field) {
@@ -45,28 +52,16 @@ class Schema
 
                     $method = $class->getMethod($field->name);
 
-                    $field->resolveFn = function ($root, $args) use ($class, $method, $field) {
-                        $data = [];
-
-                        foreach ($method->getParameters() as $param) {
-
-                            if (isset($args[$param->name])) {
-                                $data[] = $args[$param->name];
-                            } else {
-                                if ($param->isDefaultValueAvailable()) {
-                                    $data[] = $param->getDefaultValue();
-                                } else {
-                                    $data[] = null;
-                                }
-                            }
-                        }
-
+                    $field->resolveFn = function ($root, $args) use ($class, $method, $field, $context) {
                         $className = $class->getName();
                         $t = new $className();
-                        $t->root = $root;
-                        return call_user_func_array([$t, $field->name], $data);
+
+
+                        return call_user_func_array([$t, $field->name], [$root, $args, $context]);
+
                     };
                 } catch (\Exception $e) {
+
 
                 }
 
