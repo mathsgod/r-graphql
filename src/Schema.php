@@ -138,9 +138,9 @@ class Schema
                         if (is_array($directiveDef)) {
                             $resolveFn = $directiveDef[$name];
                         } else {
-                            $resolveFn = function ($next, $source, $args, $context) use ($directiveDef, $name) {
+                            $resolveFn = function ($next, $source, $args, $context, $info) use ($directiveDef, $name) {
                                 if (method_exists($directiveDef, $name)) {
-                                    return $directiveDef->$name($next, $source, $args, $context);
+                                    return $directiveDef->$name($next, $source, $args, $context, $info);
                                 } else {
                                     return $next();
                                 }
@@ -193,7 +193,7 @@ class Schema
                         };
                         $resolver = $directive["resolveFn"];
 
-                        $p = $resolver($p, $root, $directive["args"], $context);
+                        $p = $resolver($p, $root, $directive["args"], $context, $info);
                     }
 
                     $value = $orginalResolveFn($root, $args, $context, $info);
