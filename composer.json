@@ -3,7 +3,8 @@
     "description": "GraphQL for php",
     "type": "library",
     "require": {
-        "webonyx/graphql-php": "^0.12.6"
+        "webonyx/graphql-php": "^0.12.6",
+        "guzzlehttp/promises": "^1.3"
     },
     "authors": [
         {

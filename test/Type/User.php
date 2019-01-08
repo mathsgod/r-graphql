@@ -1,0 +1,7 @@
+<?
+namespace Type;
+
+class User
+{
+
+}

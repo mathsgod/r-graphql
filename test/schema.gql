@@ -1,0 +1,12 @@
+schema {
+  query: Query
+}
+
+type Query {
+  User: [User]
+}
+
+type User {
+  user_id:ID
+  first_name:String @upper @lower
+}
