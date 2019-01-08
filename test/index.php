@@ -7,14 +7,15 @@ $app = new App\App(realpath(__DIR__ . "/../../../cms"), $loader);
 
 require_once __DIR__ . "/../vendor/autoload.php";
 use R\GraphQL\Schema;
+use GraphQL\Error\Error;
 
 class DirectiveResolver
 {
     public function hasRole($next, $source, $args, $context)
     {
-        return $next()->then(function ($s) use ($args) {
-            return $s . "a" . $args["role"] . $args["a"];
-        });
+        
+        //if ($args["role"] != $context->getRole()) throw new Error("Error");
+        return $next();
     }
 
     public function upper($next)

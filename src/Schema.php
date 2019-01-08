@@ -8,6 +8,7 @@ use GraphQL\Utils\Utils;
 use GraphQL\Language\AST\DirectiveNode;
 use GuzzleHttp\Promise\Promise;
 use GraphQL\Error\Error;
+use GraphQL\Language\AST\NodeKind;
 
 class Util
 {
@@ -121,6 +122,9 @@ class Schema
         $schema = BuildSchema::build($gql);
 
         if ($directiveDef) {
+
+            $schema_directives = $schema->getDirectives();
+
             foreach ($schema->getTypeMap() as $type) {
                 if (!$type instanceof \GraphQL\Type\Definition\ObjectType) {
                     continue;
@@ -130,9 +134,26 @@ class Schema
                     foreach ($field->astNode->directives as $node) {
                         $name = $node->name->value;
 
+                        $schema_directive = array_filter($schema_directives, function ($directive)use($name) {
+                            if($directive->name==$name && in_array("FIELD_DEFINITION",$directive->locations)){
+                                return true;
+                            }
+                        });
+
+                        if(!$schema_directive){
+                            continue;
+                        }
+
                         $args = [];
                         foreach (Util::getDirectiveArguments($node) as $k => $v) {
-                            $args[$k] = $v->value;
+                            if ($v->kind == "ListValue") {
+                                $args[$k] = [];
+                                foreach ($v->values as $node) {
+                                    $args[$k][] = $node->value;
+                                }
+                            } else {
+                                $args[$k] = $v->value;
+                            }
                         }
 
                         if (is_array($directiveDef)) {
