@@ -1,5 +1,5 @@
 {
-    "name": "hostlink/r-graphql",
+    "name": "mathsgod/r-graphql",
     "description": "GraphQL for php",
     "type": "library",
     "require": {
