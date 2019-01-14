@@ -4,7 +4,8 @@
     "type": "library",
     "require": {
         "webonyx/graphql-php": "^0.12.6",
-        "guzzlehttp/promises": "^1.3"
+        "guzzlehttp/promises": "^1.3",
+        "mathsgod/graphql-php-directive-resolvers": "^1.0"
     },
     "authors": [
         {

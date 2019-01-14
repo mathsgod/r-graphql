@@ -1,9 +1,9 @@
 <?
-$path = realpath(__DIR__ . "/../../../composer/vendor/autoload.php");
+$path = realpath(__DIR__ . "/../../composer/vendor/autoload.php");
 $loader = require_once($path);
 $loader->addPsr4("Type\\", __DIR__ . "\Type");
 
-$app = new App\App(realpath(__DIR__ . "/../../../cms"), $loader);
+$app = new App\App(realpath(__DIR__ . "/../../cms"), $loader);
 
 require_once __DIR__ . "/../vendor/autoload.php";
 use R\GraphQL\Schema;
