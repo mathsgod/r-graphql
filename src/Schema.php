@@ -61,7 +61,7 @@ class Schema
         return $result;
     }
 
-    public static function Build($gql, $context, $directiveDef)
+    public static function Build($gql, $context = null, $directiveDef = null)
     {
         $schema = BuildSchema::build($gql);
 
