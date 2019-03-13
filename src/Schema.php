@@ -26,6 +26,8 @@ class Schema
             } else if (is_object($source)) {
                 if (isset($source->{$fieldName})) {
                     $property = $source->{$fieldName};
+                }elseif(method_exists($source,$fieldName)){
+                    return call_user_func([$source,$fieldName]);
                 }
             }
 
