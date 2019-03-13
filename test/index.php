@@ -13,7 +13,7 @@ class DirectiveResolver
 {
     public function hasRole($next, $source, $args, $context)
     {
-        
+
         //if ($args["role"] != $context->getRole()) throw new Error("Error");
         return $next();
     }
@@ -30,7 +30,6 @@ class DirectiveResolver
             return strtolower($s);
         });
     }
-
 }
 
 $schema = Schema::build(file_get_contents(__DIR__ . '/schema.gql'), $context, new DirectiveResolver());
@@ -42,4 +41,5 @@ $q = "query{
 }
 ";
 
-print_r($schema->executeQuery($q));
+print_r($schema->executeQuery($q, null));
+
