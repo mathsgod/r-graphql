@@ -1,4 +1,5 @@
 <?
+
 namespace R\GraphQL;
 
 use GraphQL\Utils\BuildSchema;
@@ -7,6 +8,7 @@ use GraphQL\GraphQL;
 class Schema
 {
     public $context = null;
+    public $debug = false;
     public function __construct($schema, $context)
     {
         $this->schema = $schema;
@@ -26,8 +28,8 @@ class Schema
             } else if (is_object($source)) {
                 if (isset($source->{$fieldName})) {
                     $property = $source->{$fieldName};
-                }elseif(method_exists($source,$fieldName)){
-                    return call_user_func([$source,$fieldName]);
+                } elseif (method_exists($source, $fieldName)) {
+                    return call_user_func([$source, $fieldName]);
                 }
             }
 
@@ -41,7 +43,7 @@ class Schema
         $operationName = null;
         try {
             $result = GraphQL::executeQuery($this->schema, $query, $rootValue, $this->context, $variableValues, $operationName);
-            $result = $result->toArray();
+            $result = $result->toArray($this->debug);
 
             if ($result["errors"]) {
                 $result["error"]["message"] = $result["errors"][0]["message"];
