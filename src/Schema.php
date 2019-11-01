@@ -37,7 +37,7 @@ class Schema
         };
     }
 
-    public function executeQuery($query, $variableValues)
+    public function executeQuery($query, $variableValues): array
     {
         $rootValue = null;
         $operationName = null;
@@ -60,7 +60,7 @@ class Schema
         return $result;
     }
 
-    public static function Build($gql, $context = null, $directiveDef = null, callable $typeConfigDecorator = null)
+    public static function Build(string $gql, $context = null, $directiveDef = null, callable $typeConfigDecorator = null, callable $fieldResolver = null): Schema
     {
         $schema = BuildSchema::build($gql, $typeConfigDecorator);
 
@@ -97,6 +97,8 @@ class Schema
                             $field->resolveFn = function ($root, $args, $context) use ($field, $o) {
                                 return call_user_func_array([$o, $field->name], [$root, $args, $context]);
                             };
+                        } elseif ($fieldResolver) {
+                            $field->resolveFn = $fieldResolver;
                         } else {
                             $field->resolveFn = self::FieldResolver();
                         }
