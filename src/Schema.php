@@ -37,7 +37,7 @@ class Schema
         };
     }
 
-    public function executeQuery($query, $variableValues): array
+    public function executeQuery(string $query, $variableValues = null): array
     {
         $rootValue = null;
         $operationName = null;
