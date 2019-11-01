@@ -22,3 +22,5 @@ $result = $schema->executeQuery($query, $variableValues);
 $this->write(json_encode($result));
 
 ```
+
+### Scalar function added

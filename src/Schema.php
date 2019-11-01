@@ -60,26 +60,47 @@ class Schema
         return $result;
     }
 
-    public static function Build($gql, $context = null, $directiveDef = null)
+    public static function Build($gql, $context = null, $directiveDef = null, callable $typeConfigDecorator = null)
     {
-        $schema = BuildSchema::build($gql);
+        $schema = BuildSchema::build($gql, $typeConfigDecorator);
 
         foreach ($schema->getTypeMap() as $type) {
-            try {
-                $class = new \ReflectionClass("\Type\\" . $type->name);
-            } catch (\Exception $e) {
-                continue;
+
+            if ($type instanceof \GraphQL\Type\Definition\CustomScalarType) {
+                $class = "\\Scalar\\" . $type->name;
+
+                if (class_exists($class)) {
+                    $scalar = new $class;
+                    $type->description = $scalar->description;
+
+                    if (method_exists($scalar, "serialize")) {
+                        $type->config["serialize"] = [$scalar, "serialize"];
+                    }
+
+                    if (method_exists($scalar, "parseLiteral")) {
+                        $type->config["parseLiteral"] = [$scalar, "parseLiteral"];
+                    }
+
+                    if (method_exists($scalar, "parseValue")) {
+                        $type->config["parseValue"] = [$scalar, "parseValue"];
+                    }
+                }
             }
 
-            $className = $class->getName();
-            $o = new $className();
-            foreach ($type->getFields() as $field) {
-                if (is_callable([$className, $field->name]) || method_exists($o, "__call")) {
-                    $field->resolveFn = function ($root, $args, $context) use ($field, $o) {
-                        return call_user_func_array([$o, $field->name], [$root, $args, $context]);
-                    };
-                } else {
-                    $field->resolveFn = self::FieldResolver();
+            if ($type instanceof \GraphQL\Type\Definition\ObjectType) {
+                $class = "\\Type\\" . $type->name;
+
+                if (class_exists($class)) {
+                    $o = new $class;
+                    foreach ($type->getFields() as $field) {
+                        if (is_callable([$o, $field->name]) || method_exists($o, "__call")) {
+                            $field->resolveFn = function ($root, $args, $context) use ($field, $o) {
+                                return call_user_func_array([$o, $field->name], [$root, $args, $context]);
+                            };
+                        } else {
+                            $field->resolveFn = self::FieldResolver();
+                        }
+                    }
                 }
             }
         }
