@@ -4,6 +4,7 @@ namespace R\GraphQL;
 
 use GraphQL\Utils\BuildSchema;
 use GraphQL\GraphQL;
+use Closure;
 
 class Schema
 {
@@ -37,7 +38,7 @@ class Schema
         };
     }
 
-    public function executeQuery(string $query, $variableValues = null): array
+    public function executeQuery($query, $variableValues = null): array
     {
         $rootValue = null;
         $operationName = null;
@@ -60,7 +61,7 @@ class Schema
         return $result;
     }
 
-    public static function Build(string $gql, $context = null, $directiveDef = null, callable $typeConfigDecorator = null, callable $fieldResolver = null): Schema
+    public static function Build($gql, $context = null, $directiveDef = null, callable $typeConfigDecorator = null, callable $fieldResolver = null): Schema
     {
         $schema = BuildSchema::build($gql, $typeConfigDecorator);
 
