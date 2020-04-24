@@ -1,4 +1,4 @@
-<?
+<?php
 
 namespace R\GraphQL;
 
@@ -10,6 +10,8 @@ class Schema
 {
     public $context = null;
     public $debug = false;
+    public static $Namespace = "\\";
+
     public function __construct($schema, $context)
     {
         $this->schema = $schema;
@@ -68,7 +70,7 @@ class Schema
         foreach ($schema->getTypeMap() as $type) {
 
             if ($type instanceof \GraphQL\Type\Definition\CustomScalarType) {
-                $class = "\\Scalar\\" . $type->name;
+                $class = self::$Namespace . "Scalar\\" . $type->name;
 
                 if (class_exists($class)) {
                     $scalar = new $class;
@@ -89,7 +91,7 @@ class Schema
             }
 
             if ($type instanceof \GraphQL\Type\Definition\ObjectType) {
-                $class = "\\Type\\" . $type->name;
+                $class = self::$Namespace . "Type\\" . $type->name;
 
                 if (class_exists($class)) {
                     $o = new $class;
