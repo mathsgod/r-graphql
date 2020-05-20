@@ -4,6 +4,7 @@
 
 try {
     $schema = Schema::Build(file_get_contents(__DIR__ . "/schema.gql"), $this->app);
+    
 } catch (Exception $e) {
     return ["error" => [
         "message" => $e->getMessage()
@@ -24,3 +25,19 @@ $this->write(json_encode($result));
 ```
 
 ### Scalar function added
+
+
+### JWT
+```php
+try {
+    $schema = Schema::Build(file_get_contents(__DIR__ . "/schema.gql"), $this->app);
+    $schema->validation($jwt, $key, function ($payload)  {
+        print_r($payload);
+    });
+} catch (Exception $e) {
+    return ["error" => [
+        "message" => $e->getMessage()
+    ]];
+}
+```
+

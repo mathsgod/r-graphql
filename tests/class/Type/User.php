@@ -1,7 +1,0 @@
-<?
-namespace Type;
-
-class User
-{
-
-}

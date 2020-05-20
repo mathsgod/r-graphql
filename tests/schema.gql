@@ -8,8 +8,3 @@ type Query {
   last_name:String @lower
   information:String @hasRole(role:["Admin","User"])
 }
-
-type User {
-  user_id:ID
-  first_name:String @upper
-}
