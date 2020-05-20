@@ -72,14 +72,6 @@ final class SchemaTest extends TestCase
         $loader = new ClassLoader();
         $loader->addPsr4("", __DIR__ . "/class");
         $loader->register(true);
-        $directiveResolvers = [
-            "hasRole" => function ($next, $source, $args, $app) {
-                if (!in_array($app->payload["role"], $args["role"])) {
-                    throw new Error("access deny");
-                }
-                return $next();
-            }
-        ];
 
 
         $context = new stdClass();
@@ -89,7 +81,7 @@ final class SchemaTest extends TestCase
             "iat" => time(),
             "role" => "User"
         ];
-        $schema = Schema::build(file_get_contents(__DIR__ . '/schema.gql'), $context, $directiveResolvers);
+        $schema = Schema::build(file_get_contents(__DIR__ . '/schema.gql'), $context,  new DirectiveResolver());
 
         $q = "query{ information }";
         $result = $schema->executeQuery($q);
@@ -103,7 +95,7 @@ final class SchemaTest extends TestCase
             "iat" => time(),
             "role" => "Other"
         ];
-        $schema = Schema::build(file_get_contents(__DIR__ . '/schema.gql'), $context, $directiveResolvers);
+        $schema = Schema::build(file_get_contents(__DIR__ . '/schema.gql'), $context, new DirectiveResolver());
 
         $q = "query{ information }";
 

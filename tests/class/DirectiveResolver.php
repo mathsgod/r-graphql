@@ -1,4 +1,4 @@
-<?
+<?php
 
 use GraphQL\Error\Error;
 
@@ -6,7 +6,6 @@ class DirectiveResolver
 {
     public function hasRole($next, $source, $args, $context)
     {
-        echo "Test";
         if (!in_array($context->payload["role"], $args["role"])) {
             throw new Error("access deny");
         }
