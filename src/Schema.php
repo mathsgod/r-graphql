@@ -5,6 +5,7 @@ namespace R\GraphQL;
 use GraphQL\Utils\BuildSchema;
 use GraphQL\GraphQL;
 use Closure;
+use Exception;
 
 class Schema
 {
@@ -17,6 +18,18 @@ class Schema
         $this->schema = $schema;
         $this->context = $context;
     }
+
+
+    public function setJWT(string $jwt)
+    {
+        $this->jwt = $jwt;
+    }
+
+    public function setToken(string $token)
+    {
+        $this->token = $token;
+    }
+
 
     public static function FieldResolver()
     {
@@ -53,7 +66,7 @@ class Schema
                 $result["error"]["errors"] = $result["errors"];
                 unset($result["errors"]);
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $result = [
                 'error' => [
                     'message' => $e->getMessage()
