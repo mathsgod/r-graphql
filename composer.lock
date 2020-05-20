@@ -109,21 +109,24 @@
         },
         {
             "name": "mathsgod/graphql-php-directive-resolvers",
-            "version": "1.0.0",
+            "version": "1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mathsgod/graphql-php-directive-resolvers.git",
-                "reference": "4f4fd48f30f9a2ecf3a61e0f6ca1e98854c871a0"
+                "reference": "b8a8e6c9847437480c65a712dd7566f719cc309d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mathsgod/graphql-php-directive-resolvers/zipball/4f4fd48f30f9a2ecf3a61e0f6ca1e98854c871a0",
-                "reference": "4f4fd48f30f9a2ecf3a61e0f6ca1e98854c871a0",
+                "url": "https://api.github.com/repos/mathsgod/graphql-php-directive-resolvers/zipball/b8a8e6c9847437480c65a712dd7566f719cc309d",
+                "reference": "b8a8e6c9847437480c65a712dd7566f719cc309d",
                 "shasum": ""
             },
             "require": {
                 "guzzlehttp/promises": "^1.3",
                 "webonyx/graphql-php": "^0.12.6"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^6.5"
             },
             "type": "library",
             "autoload": {
@@ -132,13 +135,20 @@
                 ]
             },
             "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
             "authors": [
                 {
                     "name": "Raymond Chong",
                     "email": "mathsgod@yahoo.com"
                 }
             ],
-            "time": "2019-01-11T04:48:34+00:00"
+            "description": "GraphQL directive resolver",
+            "keywords": [
+                "graphql"
+            ],
+            "time": "2020-05-20T09:42:09+00:00"
         },
         {
             "name": "webonyx/graphql-php",
