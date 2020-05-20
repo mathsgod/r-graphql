@@ -1,3 +1,5 @@
+![PHP Composer](https://github.com/mathsgod/r-graphql/workflows/PHP%20Composer/badge.svg)
+
 # r-graphql
 
 ```php
