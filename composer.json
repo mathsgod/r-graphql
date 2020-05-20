@@ -5,16 +5,24 @@
     "require": {
         "webonyx/graphql-php": "^0.12.6",
         "guzzlehttp/promises": "^1.3",
-        "mathsgod/graphql-php-directive-resolvers": "^1.0"
+        "mathsgod/graphql-php-directive-resolvers": "^1.0",
+        "firebase/php-jwt": "^5.2"
     },
     "authors": [
         {
             "name": "Raymond Chong",
             "email": "raymond@hostlink.com.hk"
         }
-    ],"autoload": {
+    ],
+    "autoload": {
         "psr-4": {
-            "R\\GraphQL\\":"src/"
+            "R\\GraphQL\\": "src/"
         }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^6.5"
+    },
+    "scripts": {
+        "test": "phpunit tests"
     }
 }

@@ -1,0 +1,15 @@
+directive @upper on FIELD_DEFINITION
+directive @lower on FIELD_DEFINITION
+directive @hasRole on FIELD_DEFINITION
+
+type Query {
+  me:String
+  first_name:String @upper
+  last_name:String @lower
+  information:String @hasRole(role:["Admin","User"])
+}
+
+type User {
+  user_id:ID
+  first_name:String @upper
+}

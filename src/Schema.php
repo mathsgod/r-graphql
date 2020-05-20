@@ -6,12 +6,14 @@ use GraphQL\Utils\BuildSchema;
 use GraphQL\GraphQL;
 use Closure;
 use Exception;
+use Firebase\JWT\JWT;
 
 class Schema
 {
     public $context = null;
     public $debug = false;
     public static $Namespace = "\\";
+    public $allowed_algs = ["HS256"];
 
     public function __construct($schema, $context)
     {
@@ -19,17 +21,10 @@ class Schema
         $this->context = $context;
     }
 
-
-    public function setJWT(string $jwt)
+    private function isValidJWT(string $jwt): bool
     {
-        $this->jwt = $jwt;
+        return count(explode(".", $jwt)) == 3;
     }
-
-    public function setToken(string $token)
-    {
-        $this->token = $token;
-    }
-
 
     public static function FieldResolver()
     {
@@ -53,7 +48,17 @@ class Schema
         };
     }
 
-    public function executeQuery($query, $variableValues = null): array
+    public function validation(string $jwt, string $secret, callable $callback)
+    {
+        if (!$this->isValidJWT($jwt)) {
+            throw new Exception("Invalid jwt format");
+        }
+
+        $payload = JWT::decode($jwt, $secret, $this->allowed_algs);
+        $callback((array) $payload);
+    }
+
+    public function executeQuery(string $query, $variableValues = null): array
     {
         $rootValue = null;
         $operationName = null;
@@ -76,7 +81,7 @@ class Schema
         return $result;
     }
 
-    public static function Build($gql, $context = null, $directiveDef = null, callable $typeConfigDecorator = null, callable $fieldResolver = null): Schema
+    public static function Build(string $gql, $context = null, $directiveDef = null, callable $typeConfigDecorator = null, callable $fieldResolver = null): Schema
     {
         $schema = BuildSchema::build($gql, $typeConfigDecorator);
 
